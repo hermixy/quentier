@@ -1001,6 +1001,10 @@ void NoteModel::onListNotesComplete(LocalStorageManager::ListObjectsOptions flag
 
     m_listNotesRequestId = QUuid();
 
+    m_allNotesListed = true;
+    Q_EMIT notifyAllNotesListed();
+
+    /*
     if (!foundNotes.isEmpty()) {
         NMTRACE(QStringLiteral("The number of found notes is greater than zero, requesting more notes from the local storage"));
         m_listNotesOffset += static_cast<size_t>(foundNotes.size());
@@ -1009,6 +1013,7 @@ void NoteModel::onListNotesComplete(LocalStorageManager::ListObjectsOptions flag
     }
 
     checkAndNotifyAllNotesListed();
+    */
 }
 
 void NoteModel::onListNotesFailed(LocalStorageManager::ListObjectsOptions flag, bool withResourceBinaryData,
