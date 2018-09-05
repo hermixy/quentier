@@ -364,6 +364,8 @@ void NoteItemDelegate::paint(QPainter * pPainter, const QStyleOptionViewItem & o
     }
 
     const Account & currentAccount = pNoteListView->currentAccount();
+    QNTRACE(QStringLiteral("View's current account: ") << currentAccount);
+
     if (currentAccount.type() == Account::Type::Local) {
         pPainter->restore();
         return;

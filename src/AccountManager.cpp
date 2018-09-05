@@ -100,9 +100,11 @@ int AccountManager::execAddAccountDialog()
     QScopedPointer<AddAccountDialog> addAccountDialog(new AddAccountDialog(m_pAccountModel->accounts(), parentWidget));
     addAccountDialog->setWindowModality(Qt::WindowModal);
     QObject::connect(addAccountDialog.data(), QNSIGNAL(AddAccountDialog,evernoteAccountAdditionRequested,QString,QNetworkProxy),
-                     this, QNSIGNAL(AccountManager,evernoteAccountAuthenticationRequested,QString,QNetworkProxy));
+                     this, QNSIGNAL(AccountManager,evernoteAccountAuthenticationRequested,QString,QNetworkProxy),
+                     Qt::ConnectionType(Qt::DirectConnection | Qt::UniqueConnection));
     QObject::connect(addAccountDialog.data(), QNSIGNAL(AddAccountDialog,localAccountAdditionRequested,QString,QString),
-                     this, QNSLOT(AccountManager,onLocalAccountAdditionRequested,QString,QString));
+                     this, QNSLOT(AccountManager,onLocalAccountAdditionRequested,QString,QString),
+                     Qt::ConnectionType(Qt::DirectConnection | Qt::UniqueConnection));
     return addAccountDialog->exec();
 }
 

@@ -21,6 +21,7 @@
 
 #include <quentier/utility/Macros.h>
 #include <quentier/types/ErrorString.h>
+#include <quentier/types/Account.h>
 #include <QDialog>
 
 namespace Ui {
@@ -29,7 +30,6 @@ class LocalStorageVersionTooHighDialog;
 
 namespace quentier {
 
-QT_FORWARD_DECLARE_CLASS(Account)
 QT_FORWARD_DECLARE_CLASS(AccountModel)
 QT_FORWARD_DECLARE_CLASS(AccountFilterModel)
 QT_FORWARD_DECLARE_CLASS(LocalStorageManager)
@@ -44,10 +44,19 @@ public:
                                               QWidget * parent = Q_NULLPTR);
     ~LocalStorageVersionTooHighDialog();
 
-Q_SIGNALS:
-    void shouldSwitchToAccount(Account account);
-    void shouldCreateNewAccount();
-    void shouldQuitApp();
+    struct ChosenOption
+    {
+        enum type
+        {
+            None = 0,
+            SwitchToAnotherAccount,
+            CreateNewAccount,
+            QuitApp
+        };
+    };
+
+    ChosenOption::type chosenOption() const { return m_chosenOption; }
+    const Account & accountToSwitchTo() const { return m_accountForSwitch; }
 
 private Q_SLOTS:
     void onSwitchToAccountPushButtonPressed();
@@ -65,7 +74,9 @@ private:
 
 private:
     Ui::LocalStorageVersionTooHighDialog *  m_pUi;
-    AccountFilterModel *                    m_pAccountFilterModel;
+    AccountFilterModel *    m_pAccountFilterModel;
+    ChosenOption::type      m_chosenOption;
+    Account                 m_accountForSwitch;
 };
 
 } // namespace quentier

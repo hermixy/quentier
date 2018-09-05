@@ -333,7 +333,18 @@ private:
     void setupNoteFilters();
     void setupNoteEditorTabWidgetsCoordinator();
 
-    bool checkLocalStorageVersion(const Account & account);
+    struct CheckLocalStorageVersionResult
+    {
+        enum type
+        {
+            VersionIsCorrect = 0,
+            NewAccountWasCreated = 0,
+            AccountWasSwitched,
+            QuitAppWasRequested
+        };
+    };
+
+    CheckLocalStorageVersionResult::type checkLocalStorageVersion(const Account & account);
 
     bool onceDisplayedGreeterScreen() const;
     void setOnceDisplayedGreeterScreen();
@@ -574,6 +585,8 @@ private:
     bool                    m_geometryRestored;
     bool                    m_stateRestored;
     bool                    m_shown;
+
+    bool                    m_constructorFinished;
 
     int                     m_geometryAndStatePersistingDelayTimerId;
     int                     m_splitterSizesRestorationDelayTimerId;

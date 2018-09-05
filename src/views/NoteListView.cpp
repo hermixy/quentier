@@ -140,7 +140,15 @@ const Account & NoteListView::currentAccount() const
 
 void NoteListView::setCurrentAccount(const Account & account)
 {
+    QNDEBUG(QStringLiteral("NoteListView::setCurrentAccount: ") << account);
+
+    if (m_currentAccount == account) {
+        QNDEBUG(QStringLiteral("The account hasn't changed"));
+        return;
+    }
+
     m_currentAccount = account;
+    viewport()->update();
 }
 
 void NoteListView::setCurrentNoteByLocalUid(QString noteLocalUid)

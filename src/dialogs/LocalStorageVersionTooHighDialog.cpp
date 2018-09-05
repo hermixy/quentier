@@ -31,7 +31,9 @@ LocalStorageVersionTooHighDialog::LocalStorageVersionTooHighDialog(const Account
                                                                    QWidget * parent) :
     QDialog(parent),
     m_pUi(new Ui::LocalStorageVersionTooHighDialog),
-    m_pAccountFilterModel(new AccountFilterModel(this))
+    m_pAccountFilterModel(new AccountFilterModel(this)),
+    m_chosenOption(ChosenOption::None),
+    m_accountForSwitch()
 {
     m_pUi->setupUi(this);
     m_pUi->statusBar->hide();
@@ -94,8 +96,8 @@ void LocalStorageVersionTooHighDialog::onSwitchToAccountPushButtonPressed()
         return;
     }
 
-    const Account & newAccount = accounts.at(row);
-    Q_EMIT shouldSwitchToAccount(newAccount);
+    m_accountForSwitch = accounts.at(row);
+    m_chosenOption = ChosenOption::SwitchToAnotherAccount;
     QDialog::accept();
 }
 
@@ -103,7 +105,7 @@ void LocalStorageVersionTooHighDialog::onCreateNewAccountButtonPressed()
 {
     QNDEBUG(QStringLiteral("LocalStorageVersionTooHighDialog::onCreateNewAccountButtonPressed"));
 
-    Q_EMIT shouldCreateNewAccount();
+    m_chosenOption = ChosenOption::CreateNewAccount;
     QDialog::accept();
 }
 
@@ -111,7 +113,7 @@ void LocalStorageVersionTooHighDialog::onQuitAppButtonPressed()
 {
     QNDEBUG(QStringLiteral("LocalStorageVersionTooHighDialog::onQuitAppButtonPressed"));
 
-    Q_EMIT shouldQuitApp();
+    m_chosenOption = ChosenOption::QuitApp;
     QDialog::accept();
 }
 
